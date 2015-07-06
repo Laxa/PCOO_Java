@@ -4,9 +4,11 @@ import mode.validation.ValidationException;
 
 public class MoleculeStateMachine
 {
-	static void changeState(IStateChangeable statedReference,
+	public static void changeState(IStateChangeable statedReference,
 			EMoleculeState newState) throws ValidationException
 	{
 		statedReference.validate(newState);
+
+		statedReference.setState(newState);
 	}
 }

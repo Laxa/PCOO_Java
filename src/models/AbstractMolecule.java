@@ -9,17 +9,17 @@ import model.state.IStateChangeable;
 
 public abstract class AbstractMolecule implements IStateChangeable
 {
-	private List<Atom> listAtoms = new ArrayList<Atom>();
+	private List<AbstractAtom> listAtoms = new ArrayList<AbstractAtom>();
 	private String name;
 	private String formula;
 	private EMoleculeState state;
 
-	public AbstractMolecule(ArrayList<Atom> listAtoms, String name,
-			String foruma, EMoleculeState state)
+	public AbstractMolecule(ArrayList<AbstractAtom> listAtoms, String name,
+			String formula, EMoleculeState state)
 	{
 		this.setListAtoms(listAtoms);
 		this.setName(name);
-		this.setFormula(foruma);
+		this.setFormula(formula);
 		this.setState(state);
 	}
 
@@ -27,11 +27,16 @@ public abstract class AbstractMolecule implements IStateChangeable
 	@Override
 	public void validate(EMoleculeState state) throws ValidationException
 	{
-		if (this.listAtoms.size() <= 0)
+		if (this.getName().isEmpty())
+			throw new ValidationException("The object has no name set");
+		if (this.getFormula().isEmpty())
 			throw new ValidationException(this.getName()
-					+ " has no atoms in his arry");
-		if (state == this.state)
-			throw new ValidationException(this.getName() + " is already "
+					+ " has no formula set");
+		if (this.getListAtoms().size() <= 0)
+			throw new ValidationException(this.getName()
+					+ " has no atoms in his array");
+		if (state == this.getState())
+			throw new ValidationException(this.getName() + " is already in "
 					+ state.toString());
 	}
 
@@ -69,12 +74,12 @@ public abstract class AbstractMolecule implements IStateChangeable
 		this.name = name;
 	}
 
-	public List<Atom> getListAtoms()
+	public List<AbstractAtom> getListAtoms()
 	{
 		return this.listAtoms;
 	}
 
-	public void setListAtoms(List<Atom> listAtoms)
+	public void setListAtoms(List<AbstractAtom> listAtoms)
 	{
 		this.listAtoms = listAtoms;
 	}
@@ -82,8 +87,16 @@ public abstract class AbstractMolecule implements IStateChangeable
 	@Override
 	public String toString()
 	{
-		return "I am a Molecule called " + this.getName() + ", my formula is "
-				+ this.getFormula() + " and I am composed of those atoms : "
-				+ this.getListAtoms().toString();
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("I am a Molecule called " + this.getName()
+				+ ", my formula is " + this.getFormula()
+				+ " and I am composed of those atoms :");
+		for (AbstractAtom value : this.getListAtoms())
+		{
+			builder.append("\n");
+			builder.append(value);
+		}
+		return builder.toString();
 	}
 }

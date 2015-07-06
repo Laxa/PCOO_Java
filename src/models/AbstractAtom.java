@@ -1,13 +1,13 @@
 package models;
 
-public class Atom
+public class AbstractAtom
 {
 	private String name;
 	private String symbol;
 	private Integer atomicNumber;
 
 	// Constructor
-	public Atom(String name, String symbol, int number)
+	public AbstractAtom(String name, String symbol, int number)
 	{
 		this.setAtomicNumber(number);
 		this.setName(name);
